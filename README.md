@@ -6,30 +6,33 @@ This repository contains additional material for the introductory Bioinformatics
 
 ### Command Line
 
-| Command           | Options | Example                       | Description                                               |
-|-------------------|---------|-------------------------------|-----------------------------------------------------------|
-| pwd               |         |                               | print working directory                                   |
-| ls                |         | ls /home                      | list content of directory                                 |
-|                   | -l      |                               | long; additional information for files                    |
-|                   | -a      |                               | all; also show hidden file                                |
-|                   | -t      |                               | sort by time                                              |
-|                   | -r      |                               | sort in reversed order                                    |
-| cd                |         | cd /master/data               | change into another directory                             |
-|                   |         | cd                            | without directory, change to home directory               |
-| mkdir DIRECTORY   |         | mkdir results                 | make a new directory                                      |
-| rmdir DIRECTORY   |         | rmdir testDir                 | delete an empty (!) directory                             |
-| touch FILE        |         | touch newFile.txt             | if file does not exist, generate it (rarely used...)      |
-| cp FROM TO        |         | cp thesis.txt backup.txt      | copy a file                                               |
-| mv FROM TO        |         | mv experiment.txt newName.txt | move a file, i.e. either rename it or move to a new place |
-|                   |         | mv experiment.txt ..          |                                                           |
-| less FILE         |         | less results.txt              | show contents of file (type 'q' to quit)                  |
-| head FILE         |         | head reads.fastq              | show first 10 lines of a file                             |
-|                   | -number | head -100 reads.fastq         | show the first 'number' lines of file                     |
-| tail FILE         |         | tail reads.fastq              | show the last 10 lines of a file                          |
-|                   | -number | tail -20 reads.fastq          | show the last 'number' lines of a file                    |
-| whoami            |         |                               | OK, the name says it all                                  |
-| groups            |         |                               | to which groups do I belong?                              |
-| chmod RIGHTS FILE |         | chmod go-r myThesis.txt       | change the access rights of a file                        |
+| Command           | Options | Example                           | Description                                               |
+|-------------------|---------|-----------------------------------|-----------------------------------------------------------|
+| passwd            |         |                                   | Change your password                                      |
+| pwd               |         |                                   | print working directory                                   |
+| ls                |         | ls /home                          | list content of directory                                 |
+|                   | -l      | ls -l .                           | long; additional information for files                    |
+|                   | -a      |                                   | all; also show hidden file                                |
+|                   | -t      |                                   | sort by time                                              |
+|                   | -r      | ls -ltr .                         | sort in reversed order                                    |
+| cd                |         | cd /master/data                   | change into another directory                             |
+|                   |         | cd                                | without directory, change to home directory               |
+| mkdir DIRECTORY   |         | mkdir results                     | make a new directory                                      |
+| rmdir DIRECTORY   |         | rmdir testDir                     | delete an empty (!) directory                             |
+| touch FILE        |         | touch newFile.txt                 | if file does not exist, generate it (rarely used...)      |
+| cp FROM TO        |         | cp thesis.txt backup.txt          | copy a file                                               |
+| mv FROM TO        |         | mv experiment.txt newName.txt     | move a file, i.e. either rename it or move to a new place |
+|                   |         | mv experiment.txt ..              |                                                           |
+| less FILE         |         | less results.txt                  | show contents of file (type 'q' to quit)                  |
+| head FILE         |         | head reads.fastq                  | show first 10 lines of a file                             |
+|                   | -number | head -100 reads.fastq             | show the first 'number' lines of file                     |
+| tail FILE         |         | tail reads.fastq                  | show the last 10 lines of a file                          |
+|                   | -number | tail -20 reads.fastq              | show the last 'number' lines of a file                    |
+| whoami            |         |                                   | OK, the name says it all                                  |
+| groups            |         |                                   | to which groups do I belong?                              |
+| chmod RIGHTS FILE |         | chmod go-r myThesis.txt           | change the access rights of a file                        |
+| wget URL          |         | wget https://www.uni-wuerzburg.de | get the content of an Url                                 |
+| unzip FILE        |         | unzip fastqc_v0.11.9.zip          | unzip a ziped file                                        |
 
 ### Access rights
 
@@ -53,5 +56,30 @@ You have to be in the university network, either physically or via the vpn clien
 
 - **login**: `ssh yourCloudName@ipadress`, e.g. `ssh joesch@10.106.241.119`
 - **move file from local machine to cloud**: `scp localFile yourCloudName@ipadress:targetDir`, e.g. `scp input.txt joesch@10.106.241.119:/master/home/joesch/projects/carnivores`
-- **move file from cloud to local machine** (you are on your local machine): `scp yourCloudName@ipadress:filePath localFile`, e.g. `scp  joesch@10.106.241.119:/master/home/joesch/projects/carnivores/input.txt .` 
+- **move file from cloud to local machine** (you are on your local machine): `scp yourCloudName@ipadress:filePath localFile`, e.g. `scp joesch@10.106.241.119:/master/home/joesch/projects/carnivores/input.txt .` 
 
+## RNASeq Analysis
+
+### Read Quality control
+
+#### install FastQC
+
+Go to the [FastQC Web page](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and click on **Download Now**. We need the `FastQC v0.11.9 (Win/Linux zip file)` (version might have changed!). If you are using an interactive browser, the file will be stored on your local computer. Doesn't help if you want to run the program on the Cloud machine :D. There are two solutions for this:
+1. Download it locally and use `scp` to [move the file to our cloud machine](#interaction-with-cloud-machine) (wastes storage on your local machine and takes time)
+2. Use the command line tool `wget` on the cloud machine. To get the Url, right-click on the file name and "copy link address". on the cloud command line, you can now paste this with your right mouse button. You should get `wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.9.zip`
+
+Next, unzip the file with `unzip fastqc_v0.11.9.zip`. Move into the new directory ( `cd FastQC/` ) and make the program file executable, i.e. give yourself execute rights on this file - `chmod u+x fastqc`.
+
+#### run FastQC
+
+As the fastqc program is not in your path (try `echo $PATH` to see your current path), you have to tell Linux, where to find it. So, if you are in the directory where you unpacked FastQC this is `./fastqc`. As the [documentation](https://raw.githubusercontent.com/s-andrews/FastQC/master/INSTALL.txt) tells us, fastqc will write its results into the folder where the sequence files are. This is not only ugly (we mix data and results) but in our setup not even possible, as we don't have write access to the directory which contains our RNASeq data. So, we have to use the `--outdir=` parameter to write the results in a different directory. For the moment, let's write the results into the current directory:
+```
+./fastqc --outdir=. /master/home/data/transcriptome/DM_exp001_Tr_L1_P1.fastq
+```
+
+#### check results
+
+FastQC will generate two result files, an `.html` and a `.zip` file. To view the result, [move](#interaction-with-cloud-machine) the `.zip` file to your local machine. Open it in the web browser of your choice. For me, the most important plots are the [Per base sequence quality](DM_exp001_Tr_L1_P1_fastqc.html#M1) and the [Per sequence GC content](DM_exp001_Tr_L1_P1_fastqc.html#M5). Here are some questions to think about:
+
+- What can we do if the sequence quality drops at the end of the reads?
+- How would the GC content plot look, if we have a massive contamination like bacteria?
