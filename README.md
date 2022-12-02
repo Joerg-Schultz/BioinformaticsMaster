@@ -31,7 +31,6 @@ This repository contains additional material for the introductory Bioinformatics
 | groups            |         |                               | to which groups do I belong?                              |
 | chmod RIGHTS FILE |         | chmod go-r myThesis.txt       | change the access rights of a file                        |
 
-
 ### Access rights
 
 As we are working on a multi-user system, we want to clearly define who can do what with our files. In Linux, there are three levels of access rights - (u)ser, (g)roup and (o)thers. If you want to know to which groups you belong, type `group` on the command line. In addition, there are three things a user can do with a file - (r)ead, (w)rite and e(x)ecute. For each of the three levels, we can individually set the three things that can be done.
@@ -47,4 +46,12 @@ If you type `ls -l` in a directory, you see the current rights for all files in 
 | chmod u+x fastqc      | make the file fastqc executable for the user                          |
 | chmod go-r thesis.txt | only the user can read the thesis (revoke read from group and others) |
 | chmod o-x results     | assuming that results is a directory: others can't cd into results    |
+
+### Interaction with cloud machine
+
+You have to be in the university network, either physically or via the vpn client.
+
+- **login**: `ssh yourCloudName@ipadress`, e.g. `ssh joesch@10.106.241.119`
+- **move file from local machine to cloud**: `scp localFile yourCloudName@ipadress:targetDir`, e.g. `scp input.txt joesch@10.106.241.119:/master/home/joesch/projects/carnivores`
+- **move file from cloud to local machine** (you are on your local machine): `scp yourCloudName@ipadress:filePath localFile`, e.g. `scp  joesch@10.106.241.119:/master/home/joesch/projects/carnivores/input.txt .` 
 
