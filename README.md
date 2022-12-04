@@ -113,8 +113,16 @@ In case you are a freak (in this course this is an honor - same for geek and ner
 The manual tells us, that the basic STAR workflow consists of two steps - generating a genome index and mapping the reads. So, let's start with generating a genome index. Just as a reminder, the genome fasta file is in `/master/home/data/genome/Dm_genome_assembly.fa`. Here, you can also find the annotation of the genome (`Dm_annotation.gff`). Be aware that this is not a **GTF** but a **GFF** file! Check the manual how to handle these! Also, remember that we have a big genome (3 gigaBases) and the genome assembly is very fragmented with about 100.000 scaffolds. For the number of threads, remember that we have 16 cores and there might be more than one user....
 <!--
 ```
-~/src/STAR/STAR/bin/Linux_x86_64_static/STAR --runThreadN 8 --runMode genomeGenerate --genomeDir ./genome_index --genomeFastaFiles /master/home/data/genome/Dm_genome_assembly.fa --sjdbGTFfile /master/home/data/genome/Dm_annotation.gff --sjdbGTFtagExonParentTranscript Parent --sjdbOverhang 100 --genomeChrBinNbits 15
+~/src/STAR/STAR/bin/Linux_x86_64_static/STAR --runThreadN 2 --runMode genomeGenerate --genomeDir ./genome_index --genomeFastaFiles /master/home/data/genome/Dm_genome_assembly.fa --sjdbGTFfile /master/home/data/genome/Dm_annotation.gff --sjdbGTFtagExonParentTranscript Parent --sjdbOverhang 100 --genomeChrBinNbits 15
 ```
 -->
 
 ##### Mapping Reads to Genome
+
+Now that we have generated the genome index, we can mapp the reads onto the genome. Remember that we have paired-end reads, i.e. two read files per experiment. This step will take some time, so maybe only map one experiment right now. Plus, you might want to take a smaller experiment ;-).
+
+<!--
+```
+~/src/STAR/STAR/bin/Linux_x86_64_static/STAR --runThreadN 8 --genomeDir ./genome_index --readFilesIn /master/home/data/transcriptome/DM_exp001_Tr_L1_P1.fastq /master/home/data/transcriptome/DM_exp001_Tr_L1_P2.fastq
+```
+-->
