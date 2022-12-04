@@ -1,5 +1,7 @@
 # Bioinformatics Master
 
+## Goal
+
 This repository contains additional material for the introductory Bioinformatics course taught as part of the Master Life Sciences at the university of Würzburg. In this course, you will identify genes which are up-regulated in a digesting Venus Flytrap Trap and characterize their function and evolution. To reach this goal, you will learn how to work on a remote linux machine and apply a typical RNASeq workflow. We will use RNASeq data from [Bemm et al.](https://genome.cshlp.org/content/26/6/812.full.html) and the genome published in [Palvalfi et al.](https://www.sciencedirect.com/science/article/pii/S0960982220305674)
 
 ## Linux Basics
@@ -83,3 +85,36 @@ FastQC will generate two result files, an `.html` and a `.zip` file. To view the
 
 - What can we do if the sequence quality drops at the end of the reads?
 - How would the GC content plot look, if we have a massive contamination like bacteria?
+
+### Read Mapping
+
+#### Install STAR
+
+Check the STAR [GitHub repository](https://github.com/alexdobin/STAR). You can clone this repository to your local computer using the URL given by the green '<> Code' button. Make sure you selected 'https' and copy the URL. Now, in a directory of your choice (may I suggest `src`;-), clone the git repository.
+```
+git clone https://github.com/alexdobin/STAR.git
+```
+(Just as a note: You can clone this git repository just the same way)
+
+The manual (check the GitHub start page or the README.md file in your local git repository) tells us, that we already have pre-compiled binaries in the bin directory and that the `static` executables are the easiest to use. Let's check this:
+
+```
+cd STAR/bin
+ls
+cd Linux_x86_64_static
+./STAR
+```
+
+In case you are a freak (in this course this is an honor - same for geek and nerd), you might want to compile the source code yourself :o . To do this, we follow the documentation and 'run `make` in  the source directory'. This will take some time. If you want to get some idea about what's going on here, there is an [awesome C++ course on YouTube](https://www.youtube.com/playlist?list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb). Most relevant here is the [How the C++ Works](https://www.youtube.com/watch?v=SfGuIVzE_Os&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb&index=5). And of course, if you want to learn how to program C++, just work through the course (don't :D). But I digress....
+
+#### Running STAR
+
+##### Generating Genome Index
+The manual tells us, that the basic STAR workflow consists of two steps - generating a genome index and mapping the reads. So, let's start with generating a genome index. Just as a reminder, the genome fasta file is in `/master/home/data/genome/Dm_genome_assembly.fa`. Here, you can also find the annotation of the genome (`Dm_annotation.gff`). Be aware that this is not a **GTF** but a **GFF** file! Check the manual how to handle these! Also, remember that we have a big genome (3 gigaBases) and the genome assembly is very fragmented with about 100.000 scaffolds. For the number of threads, remember that we have 16 cores and there might be more than one user....
+<!--
+```
+~/src/STAR/STAR/bin/Linux_x86_64_static/STAR --runThreadN 8 --runMode genomeGenerate --genomeDir ./genome_index --genomeFastaFiles /master/home/data/genome/Dm_genome_assembly.fa --sjdbGTFfile /master/home/data/genome/Dm_annotation.gff --sjdbGTFtagExonParentTranscript Parent --sjdbOverhang 100 --genomeChrBinNbits 15
+```
+-->
+
+##### Mapping Reads to Genome
