@@ -130,9 +130,12 @@ Now that we have generated the genome index, we can mapp the reads onto the geno
 - Log.final.out - Check 'Uniquely mapped reads %', ' % of reads mapped to multiple loci' and, if necessary, find out why you have unmapped reads.
 - Aligned.out.sam - The alignment of the reads to the genome. That's the file you need! Although you rarely will have to check the raw contents of the file, let's have a short look. You can find a general description of the format [here](https://en.wikipedia.org/wiki/SAM_(file_format)). The SAM format uses the [CIGAR](https://en.wikipedia.org/wiki/Sequence_alignment#Representations) format to represent the alignments. A [nice example](https://genome.sph.umich.edu/wiki/SAM) on how to transcribe an alignment to a CIGAR String.
 
+Want to see some nice command line magic? Try `grep 'NH:i' Aligned.out.sam  | cut -f 12 | sort | uniq -c > ~/tmp/NH.results` (Takes some time, file is huge!). What does this do?
+
 ### Counting mapped reads with RSEM
 
-Now that we have mapped the reads onto our genome, we have to count the number of reads mapped onto a gene. To do this, we use the program [RSEM](https://github.com/deweylab/RSEM). Nicely, RSEM has an option to perform the read-mapping (using STAR ;-) by itself. Still, I wanted you to run the mapper by yourself to see that this is no magic and de-facto just a call of a program. As with STAR, you first have to prepare the genome index. Here's an example on how to run this
+Now that we have mapped the reads onto our genome, we have to count the number of reads mapped onto a gene. This is not as trivial as it seems. Remember, we have paired reads, we have multi-maps, and we have splice variants. To do this, we use the program [RSEM](https://github.com/deweylab/RSEM) ([article](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323)). Nicely, RSEM has an option to perform the read-mapping (using STAR ;-) by itself. Still, I wanted you to run the mapper by yourself to see that this is no magic and de-facto just a call of a program. As with STAR, you first have to prepare the genome index. Here's an example on how to run this
+
 ```
 /home/binf009/src/RSEM-1.3.3/rsem-prepare-reference --gff3 /storage/compevolbiol/projects/carnivores/RESULTS/Dm_annotation.gff  --star --star-path /storage/compevolbiol/software/star/bin/Linux_x86_64 -p 8  /storage/compevolbiol/projects/carnivores/RESULTS/Dm_genome_assembly.fa  ./Dionaea_ref
 
@@ -145,8 +148,20 @@ And now you have to count the reads for each of our sequencing runs:
 
 As this takes quite some time, I've run it on our CCTB Cluster and copied the results into `/master/home/data/differential_expression`
 
+Now, let's have a look at the results: `head DM_exp001_Tr_L3.genes.results`. So, this is a table with some strange columns. First odd thing is the 'effective length'. I found the following [nice explanation](https://groups.google.com/g/rsem-users/c/IaZmviqghJc) from one of the authors:
+
+**Effective Length**
+> The effective length for a transcript is the essentially the number of possible start positions for a read or fragment within that transcript, given that the read or fragment must fit entirely within the transcript boundaries.  So if you have a transcript of length L and all of your fragments are of length F, then the effective length of that transcript is
+`L - F + 1`. Things are complicated by the fact that in an RNA-Seq experiment, the fragments have varying lengths, so the effective length is actually the *mean* number of possible start positions for a fragment within a given transcript.  This changes the formula to something like `L - mean(F) + 1`. The exact formula is slightly more complicated to take into account situations in which some possible fragment lengths are longer than the transcript itself, but for relatively long transcripts this formula is correct. At the gene level, RSEM considers the effective length of a gene to be the abundance-weighted mean effective length of its isoforms.
+
+**expected count**
+Check [this](https://www.biostars.org/p/253526/). (BioStars is always a good place to search for bioinformatics solutions). You see that this is already ways more sophisticated than using raw counts we got from the STAR mapping!
+
+And now we have to normalize these read counts for (i) the length of the gene and (ii) the sequencing depth, i.e. how much was sequenced in this experiment. [This video](https://www.youtube.com/watch?v=TTUrtCY2k-w) gives you a nice explanation how this works. You then will also understand the next two columns, **TPM** and **FPKM**.
 
 <!--
-grep, links
+links
+grep, sort, uniq 
 pipes
+cluster setup, SLURM (idea of)
 -->
