@@ -159,6 +159,26 @@ Check [this](https://www.biostars.org/p/253526/). (BioStars is always a good pla
 
 And now we have to normalize these read counts for (i) the length of the gene and (ii) the sequencing depth, i.e. how much was sequenced in this experiment. [This video](https://www.youtube.com/watch?v=TTUrtCY2k-w) gives you a nice explanation how this works. You then will also understand the next two columns, **TPM** and **FPKM**.
 
+### DESeq2
+
+If you happen to have a pre-4 version of R (`R --version`) install the new one following this [Blog Article](http://genomespot.blogspot.com/2020/06/installing-r-40-on-ubuntu-1804.html). Then, in R, install the following packages (I've done that on our machine):
+
+```
+install.packages("BiocManager")
+BiocManager::install("tximport")
+BiocManager::install("DESeq2")
+install.packages("readr")
+install.packages("rjson")
+install.packages("gplots")
+install.packages("RColorBrewer")
+```
+
+If you want to execute the sample code in Emacs, you also need EmacsSpeaksStatistics (`sudo apt-get install ess`)
+
+[tximport](https://bioconductor.org/packages/release/bioc/html/tximport.html)
+[DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
+
+
 <!--
 links
 grep, sort, uniq 
