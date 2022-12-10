@@ -17,6 +17,7 @@ This repository contains additional material for the introductory Bioinformatics
 |                   | -a      |                                   | all; also show hidden file                                |
 |                   | -t      |                                   | sort by time                                              |
 |                   | -r      | ls -ltr .                         | sort in reversed order                                    |
+|                   | -h      | ls -h .                           | human readable                                            |
 | cd                |         | cd /master/data                   | change into another directory                             |
 |                   |         | cd                                | without directory, change to home directory               |
 | mkdir DIRECTORY   |         | mkdir results                     | make a new directory                                      |
@@ -111,18 +112,41 @@ In case you are a freak (in this course this is an honor - same for geek and ner
 
 ##### Generating Genome Index
 The manual tells us, that the basic STAR workflow consists of two steps - generating a genome index and mapping the reads. So, let's start with generating a genome index. Just as a reminder, the genome fasta file is in `/master/home/data/genome/Dm_genome_assembly.fa`. Here, you can also find the annotation of the genome (`Dm_annotation.gff`). Be aware that this is not a **GTF** but a **GFF** file! Check the manual how to handle these! Also, remember that we have a big genome (3 gigaBases) and the genome assembly is very fragmented with about 100.000 scaffolds. For the number of threads, remember that we have 16 cores and there might be more than one user....
-<!--
+
 ```
 ~/src/STAR/STAR/bin/Linux_x86_64_static/STAR --runThreadN 2 --runMode genomeGenerate --genomeDir ./genome_index --genomeFastaFiles /master/home/data/genome/Dm_genome_assembly.fa --sjdbGTFfile /master/home/data/genome/Dm_annotation.gff --sjdbGTFtagExonParentTranscript Parent --sjdbOverhang 100 --genomeChrBinNbits 15
 ```
--->
 
 ##### Mapping Reads to Genome
 
 Now that we have generated the genome index, we can mapp the reads onto the genome. Remember that we have paired-end reads, i.e. two read files per experiment. This step will take some time, so maybe only map one experiment right now. Plus, you might want to take a smaller experiment ;-).
 
-<!--
 ```
 ~/src/STAR/STAR/bin/Linux_x86_64_static/STAR --runThreadN 8 --genomeDir ./genome_index --readFilesIn /master/home/data/transcriptome/DM_exp001_Tr_L1_P1.fastq /master/home/data/transcriptome/DM_exp001_Tr_L1_P2.fastq
 ```
+
+#### Checking Results
+
+- Log.final.out - Check 'Uniquely mapped reads %', ' % of reads mapped to multiple loci' and, if necessary, find out why you have unmapped reads.
+- Aligned.out.sam - The alignment of the reads to the genome. That's the file you need! Although you rarely will have to check the raw contents of the file, let's have a short look. You can find a general description of the format [here](https://en.wikipedia.org/wiki/SAM_(file_format)). The SAM format uses the [CIGAR](https://en.wikipedia.org/wiki/Sequence_alignment#Representations) format to represent the alignments. A [nice example](https://genome.sph.umich.edu/wiki/SAM) on how to transcribe an alignment to a CIGAR String.
+
+### Counting mapped reads with RSEM
+
+Now that we have mapped the reads onto our genome, we have to count the number of reads mapped onto a gene. To do this, we use the program [RSEM](https://github.com/deweylab/RSEM). Nicely, RSEM has an option to perform the read-mapping (using STAR ;-) by itself. Still, I wanted you to run the mapper by yourself to see that this is no magic and de-facto just a call of a program. As with STAR, you first have to prepare the genome index. Here's an example on how to run this
+```
+/home/binf009/src/RSEM-1.3.3/rsem-prepare-reference --gff3 /storage/compevolbiol/projects/carnivores/RESULTS/Dm_annotation.gff  --star --star-path /storage/compevolbiol/software/star/bin/Linux_x86_64 -p 8  /storage/compevolbiol/projects/carnivores/RESULTS/Dm_genome_assembly.fa  ./Dionaea_ref
+
+```
+
+And now you have to count the reads for each of our sequencing runs:
+```
+/home/binf009/src/RSEM-1.3.3/rsem-calculate-expression --star --star-path /storage/compevolbiol/software/star/bin/Linux_x86_64 -p 8 --paired-end data/DM_exp001_Tr_L2_R1.fq data/DM_exp001_Tr_L2_R2.fq Dionaea_ref DM_exp001_Tr_L2
+```
+
+As this takes quite some time, I've run it on our CCTB Cluster and copied the results into `/master/home/data/differential_expression`
+
+
+<!--
+grep, links
+pipes
 -->
