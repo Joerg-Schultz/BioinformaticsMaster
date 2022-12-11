@@ -178,6 +178,11 @@ If you want to execute the sample code in Emacs, you also need EmacsSpeaksStatis
 [tximport](https://bioconductor.org/packages/release/bioc/html/tximport.html)
 [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
 
+#### Principal Component Analysis
+
+1. How to [interpret](https://www.youtube.com/watch?v=HMOI_lkzW08) it
+2. How it is [calculated](https://www.youtube.com/watch?v=FgakZw6K1QQ) (No math inside ;-)
+
 
 <!--
 links
