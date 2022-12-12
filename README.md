@@ -35,7 +35,15 @@ This repository contains additional material for the introductory Bioinformatics
 | groups            |         |                                   | to which groups do I belong?                              |
 | chmod RIGHTS FILE |         | chmod go-r myThesis.txt           | change the access rights of a file                        |
 | wget URL          |         | wget https://www.uni-wuerzburg.de | get the content of an Url                                 |
-| unzip FILE        |         | unzip fastqc_v0.11.9.zip          | unzip a ziped file                                        |
+| grep              |         |                                   | 'grep' Content from file                                  |
+| unzip FILE        |         | unzip fastqc_v0.11.9.zip          | unzip a zipped file                                       |
+| wc                |         | wc file.txt                       | count the number of lines, words and bytes                |
+| cut               |         |                                   | get columns from rows                                     |
+| sort              |         |                                   | sort a file alphanumerically                              |
+| uniq              |         |                                   | merge identical lines (which are next to each other)      |
+|                   | -c      | uniq -c                           | count number of merged lines                              |
+|                   |         |                                   |                                                           |
+
 
 ### Access rights
 
@@ -52,6 +60,12 @@ If you type `ls -l` in a directory, you see the current rights for all files in 
 | chmod u+x fastqc      | make the file fastqc executable for the user                          |
 | chmod go-r thesis.txt | only the user can read the thesis (revoke read from group and others) |
 | chmod o-x results     | assuming that results is a directory: others can't cd into results    |
+
+
+### Pipes
+
+- Leite den Output eines Programs in ein anderes. `program1 | program1`.
+- Leite den Output eines Programs in eine neue Datei um. `program1 > neueDatei.txt`
 
 ### Interaction with cloud machine
 
@@ -186,7 +200,7 @@ If you want to execute the sample code in Emacs, you also need EmacsSpeaksStatis
 
 <!--
 links
-grep, sort, uniq 
-pipes
+grep, sort, uniq: check
+pipes : check
 cluster setup, SLURM (idea of)
 -->
