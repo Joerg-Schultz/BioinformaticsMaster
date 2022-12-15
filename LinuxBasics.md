@@ -1,6 +1,6 @@
-## Linux Basics
+# Linux Basics
 
-### Command Line
+## Command Line
 
 | Command           | Options | Example                           | Description                                               |
 |-------------------|---------|-----------------------------------|-----------------------------------------------------------|
@@ -39,7 +39,7 @@
 |                   |         |                                   |                                                           |
 
 
-### Access rights
+## Access rights
 
 As we are working on a multi-user system, we want to clearly define who can do what with our files. In Linux, there are three levels of access rights - (u)ser, (g)roup and (o)thers. If you want to know to which groups you belong, type `group` on the command line. In addition, there are three things a user can do with a file - (r)ead, (w)rite and e(x)ecute. For each of the three levels, we can individually set the three things that can be done.
 
@@ -56,12 +56,12 @@ If you type `ls -l` in a directory, you see the current rights for all files in 
 | chmod o-x results     | assuming that results is a directory: others can't cd into results    |
 
 
-### Pipes
+## Pipes
 
 - Leite den Output eines Programs in ein anderes. `program1 | program1`.
 - Leite den Output eines Programs in eine neue Datei um. `program1 > neueDatei.txt`
 
-### Interaction with cloud machine
+## Interaction with cloud machine
 
 You have to be in the university network, either physically or via the vpn client.
 
