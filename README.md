@@ -8,7 +8,7 @@ This repository contains additional material for the introductory Bioinformatics
 
 [RNASeq Analysis](./RNASeqAnalysis.md)
 
-
+![Outline](./OutlineMasterVorlesung.png)
 <!--
 links
 grep, sort, uniq: check
