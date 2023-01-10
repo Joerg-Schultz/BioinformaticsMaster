@@ -20,6 +20,7 @@
 | cp FROM TO        |         | cp thesis.txt backup.txt          | copy a file                                               |
 | mv FROM TO        |         | mv experiment.txt newName.txt     | move a file, i.e. either rename it or move to a new place |
 |                   |         | mv experiment.txt ..              |                                                           |
+| rn DATEI          |         | rm bla.txt                        | remove file                                               |
 | less FILE         |         | less results.txt                  | show contents of file (type 'q' to quit)                  |
 | head FILE         |         | head reads.fastq                  | show first 10 lines of a file                             |
 |                   | -number | head -100 reads.fastq             | show the first 'number' lines of file                     |
